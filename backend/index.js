@@ -3,14 +3,19 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 
+const candidateRoutes = require('./routes/candidateRoutes');
+const path = require('path');
+
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Connect to Database
 connectDB();
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.use('/candidate', candidateRoutes);
 
 app.get('/', (req, res) => {
   res.json({ status: "ok" });

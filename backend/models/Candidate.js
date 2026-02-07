@@ -17,7 +17,11 @@ const CandidateSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        required: [true, 'Please add a phone number']
+        required: [true, 'Please add a phone number'],
+        match: [
+             /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+             'Please add a valid phone number'
+        ]
     },
     jobTitle: {
         type: String,
