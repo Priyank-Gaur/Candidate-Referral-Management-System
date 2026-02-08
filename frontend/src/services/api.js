@@ -18,7 +18,16 @@ export const getCandidates = async () => {
 };
 
 export const createCandidate = async (candidateData) => {
-    const response = await api.post('/candidate', candidateData);
+    const config = {};
+    if (candidateData instanceof FormData) {
+        config.headers = { 'Content-Type': 'multipart/form-data' };
+    }
+    const response = await api.post('/candidate', candidateData, config);
+    return response.data;
+};
+
+export const getStats = async () => {
+    const response = await api.get('/candidate/stats');
     return response.data;
 };
 
@@ -33,6 +42,7 @@ export const deleteCandidate = async (id) => {
 };
 
 export const getResumeUrl = (path) => {
+    if (path.startsWith('http')) return path;
     return `http://localhost:3000/${path}`;
 };
 

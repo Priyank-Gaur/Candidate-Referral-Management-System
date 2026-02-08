@@ -4,6 +4,7 @@ import CandidateCard from '../components/CandidateCard';
 import CandidateForm from '../components/CandidateForm';
 import AuthContext from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Metrics from '../components/Metrics';
 
 const Dashboard = () => {
     const [candidates, setCandidates] = useState([]);
@@ -89,19 +90,22 @@ const Dashboard = () => {
             {loading ? (
                 <p>Loading candidates...</p>
             ) : (
-                <div className="candidates-grid">
-                    {filteredCandidates.length > 0 ? (
-                        filteredCandidates.map(candidate => (
-                            <CandidateCard 
-                                key={candidate._id} 
-                                candidate={candidate} 
-                                onStatusUpdate={fetchCandidates}
-                            />
-                        ))
-                    ) : (
-                        <p className="no-results">No candidates found.</p>
-                    )}
-                </div>
+                <>
+                    <Metrics refreshTrigger={candidates} />
+                    <div className="candidates-grid">
+                        {filteredCandidates.length > 0 ? (
+                            filteredCandidates.map(candidate => (
+                                <CandidateCard 
+                                    key={candidate._id} 
+                                    candidate={candidate} 
+                                    onStatusUpdate={fetchCandidates}
+                                />
+                            ))
+                        ) : (
+                            <p className="no-results">No candidates found.</p>
+                        )}
+                    </div>
+                </>
             )}
         </div>
     );

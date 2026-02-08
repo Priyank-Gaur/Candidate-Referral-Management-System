@@ -2,6 +2,7 @@ const Candidate = require('../models/Candidate');
 
 exports.createCandidate = async (req, res) => {
     try {
+        console.log('Backend createCandidate body:', req.body);
         const { name, email, phone, jobTitle, resumeUrl } = req.body;
 
         const candidate = new Candidate({
@@ -66,6 +67,42 @@ exports.deleteCandidate = async (req, res) => {
 
         await candidate.deleteOne();
         res.status(200).json({ message: 'Candidate deleted' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.getCandidateStats = async (req, res) => {
+    try {
+        const stats = await Candidate.aggregate([
+            { $match: { user: req.user._id } },
+            {
+                $group: {
+                    _id: '$status',
+                    count: { $sum: 1 }
+                }
+            }
+        ]);
+
+        const totalCandidates = await Candidate.countDocuments({ user: req.user._id });
+
+        const statusBreakdown = {
+            Pending: 0,
+            Reviewed: 0,
+            Hired: 0,
+            Rejected: 0
+        };
+
+        stats.forEach(stat => {
+            if (statusBreakdown.hasOwnProperty(stat._id)) {
+                statusBreakdown[stat._id] = stat.count;
+            }
+        });
+
+        res.status(200).json({
+            total: totalCandidates,
+            breakdown: statusBreakdown
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
