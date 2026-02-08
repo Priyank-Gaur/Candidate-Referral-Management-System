@@ -1,33 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { getStats } from '../services/api';
-
-const Metrics = ({ refreshTrigger }) => {
-    const [stats, setStats] = useState({
-        total: 0,
+const Metrics = ({ candidates }) => {
+    const stats = {
+        total: candidates.length,
         breakdown: {
             Pending: 0,
             Reviewed: 0,
             Hired: 0,
             Rejected: 0
         }
+    };
+
+    candidates.forEach(candidate => {
+        if (stats.breakdown.hasOwnProperty(candidate.status)) {
+            stats.breakdown[candidate.status]++;
+        }
     });
-
-    useEffect(() => {
-        const fetchStats = async () => {
-            try {
-                const data = await getStats();
-                setStats(data);
-            } catch (error) {
-                console.error('Failed to fetch stats:', error);
-            }
-        };
-
-        fetchStats();
-    }, [refreshTrigger]);
-
-    if (!stats || !stats.breakdown) {
-        return <div>Loading stats...</div>;
-    }
 
     return (
 

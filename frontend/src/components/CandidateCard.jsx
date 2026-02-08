@@ -11,7 +11,7 @@ const CandidateCard = ({ candidate, onStatusUpdate }) => {
         try {
             await updateStatus(candidate._id, newStatus);
             setStatus(newStatus);
-            if (onStatusUpdate) onStatusUpdate();
+            if (onStatusUpdate) onStatusUpdate(candidate._id, newStatus);
         } catch (error) {
             console.error('Failed to update status', error);
             alert('Failed to update status');
@@ -25,7 +25,7 @@ const CandidateCard = ({ candidate, onStatusUpdate }) => {
             setLoading(true);
             try {
                 await deleteCandidate(candidate._id);
-                if (onStatusUpdate) onStatusUpdate();
+                if (onStatusUpdate) onStatusUpdate(candidate._id, 'DELETED');
             } catch (error) {
                 console.error('Failed to delete candidate', error);
                 alert('Failed to delete candidate');

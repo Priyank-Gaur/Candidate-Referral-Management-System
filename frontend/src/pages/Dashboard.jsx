@@ -51,6 +51,14 @@ const Dashboard = () => {
         navigate('/login');
     };
 
+    const handleStatusUpdate = (id, newStatus) => {
+        if (newStatus === 'DELETED') {
+            setCandidates(prev => prev.filter(c => c._id !== id));
+        } else {
+            setCandidates(prev => prev.map(c => c._id === id ? { ...c, status: newStatus } : c));
+        }
+    };
+
     return (
         <div className="dashboard-container">
             <header className="dashboard-header">
@@ -91,14 +99,14 @@ const Dashboard = () => {
                 <p>Loading candidates...</p>
             ) : (
                 <>
-                    <Metrics refreshTrigger={candidates} />
+                    <Metrics candidates={candidates} />
                     <div className="candidates-grid">
                         {filteredCandidates.length > 0 ? (
                             filteredCandidates.map(candidate => (
                                 <CandidateCard 
                                     key={candidate._id} 
                                     candidate={candidate} 
-                                    onStatusUpdate={fetchCandidates}
+                                    onStatusUpdate={handleStatusUpdate}
                                 />
                             ))
                         ) : (
