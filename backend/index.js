@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 
 const candidateRoutes = require('./routes/candidateRoutes');
+const authRoutes = require('./routes/authRoutes');
 const path = require('path');
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/candidate', candidateRoutes);
+app.use('/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.json({ status: "ok" });

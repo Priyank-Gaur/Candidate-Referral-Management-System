@@ -9,7 +9,8 @@ exports.createCandidate = async (req, res) => {
             email,
             phone,
             jobTitle,
-            resumeUrl
+            resumeUrl,
+            user: req.user.id
         });
 
         await candidate.save();
@@ -22,7 +23,7 @@ exports.createCandidate = async (req, res) => {
 
 exports.getCandidates = async (req, res) => {
     try {
-        const candidates = await Candidate.find().sort({ createdAt: -1 });
+        const candidates = await Candidate.find({ user: req.user.id }).sort({ createdAt: -1 });
         res.status(200).json(candidates);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -39,8 +40,8 @@ exports.updateCandidateStatus = async (req, res) => {
             return res.status(400).json({ message: 'Invalid status' });
         }
 
-        const candidate = await Candidate.findByIdAndUpdate(
-            req.params.id,
+        const candidate = await Candidate.findOneAndUpdate(
+            { _id: req.params.id, user: req.user.id },
             { status },
             { new: true, runValidators: true }
         );
@@ -57,7 +58,7 @@ exports.updateCandidateStatus = async (req, res) => {
 
 exports.deleteCandidate = async (req, res) => {
     try {
-        const candidate = await Candidate.findById(req.params.id);
+        const candidate = await Candidate.findOne({ _id: req.params.id, user: req.user.id });
 
         if (!candidate) {
             return res.status(404).json({ message: 'Candidate not found' });

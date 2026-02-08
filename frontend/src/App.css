@@ -79,6 +79,31 @@ body {
   transform: translateY(-2px);
 }
 
+.logout-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+  box-shadow: var(--shadow);
+}
+
+.logout-btn:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+}
+
+.user-welcome {
+  display: block;
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  margin-top: 5px;
+}
+
 .candidates-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -218,7 +243,6 @@ body {
   color: #c0392b;
 }
 
-/* Form Styling */
 .candidate-form-container h3 {
   margin-top: 0;
   color: #2c3e50;
@@ -297,4 +321,61 @@ body {
   font-size: 1.2rem;
   color: #7f8c8d;
   padding: 40px;
+}
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-card h2 {
+  margin-bottom: 30px;
+  color: #2c3e50;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.auth-link {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.auth-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
 }

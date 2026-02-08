@@ -36,6 +36,11 @@ const CandidateSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a resume URL']
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    },
     createdAt: {
         type: Date,
         default: Date.now

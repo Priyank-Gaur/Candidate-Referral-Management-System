@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { getCandidates } from '../services/api';
 import CandidateCard from '../components/CandidateCard';
 import CandidateForm from '../components/CandidateForm';
+import AuthContext from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
     const [candidates, setCandidates] = useState([]);
@@ -9,6 +11,8 @@ const Dashboard = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [showForm, setShowForm] = useState(false);
     const [loading, setLoading] = useState(true);
+    const { logout, user } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const fetchCandidates = async () => {
         setLoading(true);
@@ -41,10 +45,18 @@ const Dashboard = () => {
         setShowForm(false);
     };
 
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
+
     return (
         <div className="dashboard-container">
             <header className="dashboard-header">
-                <h1>Candidate Referral Dashboard</h1>
+                <div className="header-left">
+                    <h1>Candidate Referral Dashboard</h1>
+                    <span className="user-welcome">Welcome, {user?.name}</span>
+                </div>
                 <div className="header-actions">
                     <input
                         type="text"
@@ -58,6 +70,9 @@ const Dashboard = () => {
                         onClick={() => setShowForm(!showForm)}
                     >
                         {showForm ? 'Close Form' : 'Add Candidate'}
+                    </button>
+                    <button className="logout-btn" onClick={handleLogout}>
+                        Logout
                     </button>
                 </div>
             </header>
